@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    min-height: 100vh;
+}
+
+.sidebar__wrapper {
+    background: #161718;
+    color: white;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.main__wrapper {
+    padding: 0.5rem 1rem;
+}
