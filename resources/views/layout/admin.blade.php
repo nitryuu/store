@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ global_asset('css/custom-style.css') }}">
 </head>
 
 <body>
@@ -34,6 +34,17 @@
                     <div class="sidebar__menu-list">
                         <a href="{{ url('/order-input') }}">Input Pembelian</a>
                     </div>
+                    <div class="sidebar__menu-list">
+                        <a href="{{ url('/supplier') }}">Supplier</a>
+                    </div>
+                    <div class="sidebar__menu-list">
+                        <a href="{{ url('/category') }}">Kategori</a>
+                    </div>
+                    @if (!tenant())
+                        <div class="sidebar__menu-list">
+                            <a href="{{ url('/branch') }}">Cabang</a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

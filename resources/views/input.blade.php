@@ -32,9 +32,22 @@
                     <div class="order-data-list">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
+                                <label class="input-group-text">Kategori</label>
+                            </div>
+                            <select class="custom-select" name="category">
+                                <option value="" selected>Choose...</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="order-data-list">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
                                 <label class="input-group-text">No Nota</label>
                             </div>
-                            <input type="text" name="transaction_number" class="form-control">
+                            <input type="text" name="transaction_id" class="form-control">
                         </div>
                     </div>
                     <div class="order-data-list">
@@ -57,30 +70,30 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <input type="text" name="name[]" class="form-control" required>
+                                    <input type="text" name="name[]" class="form-control">
                                 </td>
                                 <td>
-                                    <input type="number" name="qty[]" class="form-control qty" required>
+                                    <input type="number" name="qty[]" class="form-control qty">
                                 </td>
                                 <td>
-                                    <input type="number" name="price[]" class="form-control price" required>
+                                    <input type="number" name="price[]" class="form-control price">
                                 </td>
                                 <td>
-                                    <input type="number" name="subtotal[]" class="form-control subtotal" disabled>
+                                    <input type="number" name="subtotal[]" class="form-control subtotal" readonly>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" name="name[]" class="form-control" required>
+                                    <input type="text" name="name[]" class="form-control">
                                 </td>
                                 <td>
-                                    <input type="number" name="qty[]" class="form-control qty" required>
+                                    <input type="number" name="qty[]" class="form-control qty">
                                 </td>
                                 <td>
-                                    <input type="number" name="price[]" class="form-control price" required>
+                                    <input type="number" name="price[]" class="form-control price">
                                 </td>
                                 <td>
-                                    <input type="number" name="subtotal[]" class="form-control subtotal" disabled>
+                                    <input type="number" name="subtotal[]" class="form-control subtotal" readonly>
                                 </td>
                             </tr>
                         </tbody>
@@ -95,7 +108,8 @@
                                                 </span>
                                             </div>
                                             <div class="col-10">
-                                                <input type="number" name="total" class="form-control grandTotal" disabled>
+                                                <input type="number" name="total" class="form-control grandTotal"
+                                                    name="total" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -103,7 +117,7 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <input type="file" name="files" accept="image/*" multiple>
+                    <input type="file" name="files[]" accept="image/*" multiple>
                     <button type="submit" class="btn btn-primary mt-5 float-right">Submit</button>
                 </form>
             </div>
@@ -139,22 +153,30 @@
             row.data('old', row.find('.subtotal').data('old', subtotal))
         }
 
+        $('body').on('change', '.order-input__wrapper table tbody tr td input', function() {
+            if ($(this).val()) {
+                $(this).parents('tr').find('input').attr('required', true)
+            } else {
+                $(this).parents('tr').find('input').attr('required', false)
+            }
+        })
+
         $('body').on('focus', '.qty', function() {
             attachSubtotal($(this))
 
             let count = $('.order-input__wrapper table tbody tr').length
-            let current = $(this).parents('tr').index()
-            if (count == current)
-                $('.order-input__wrapper table tbody tr:last').clone().appendTo('.order-input__wrapper table tbody')
+            let current = $(this).parents('tr').index() + 1
+            count == current && $('.order-input__wrapper table tbody tr:last').clone().appendTo(
+                '.order-input__wrapper table tbody').find('input').val('').attr('required', false)
         })
 
         $('body').on('focus', '.price', function() {
             attachSubtotal($(this))
 
             let count = $('.order-input__wrapper table tbody tr').length
-            let current = $(this).parents('tr').index()
-            if (count == current)
-                $('.order-input__wrapper table tbody tr:last').clone().appendTo('.order-input__wrapper table tbody')
+            let current = $(this).parents('tr').index() + 1
+            count == current && $('.order-input__wrapper table tbody tr:last').clone().appendTo(
+                '.order-input__wrapper table tbody').find('input').val('').attr('required', false)
         })
 
         $('body').on('change', '.price', function() {

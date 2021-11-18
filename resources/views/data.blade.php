@@ -18,6 +18,9 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
+                        @if (!tenant())
+                            <th>Branch</th>
+                        @endif
                         <th>Total</th>
                         <th>Date</th>
                     </tr>
@@ -26,8 +29,11 @@
                     @foreach ($orders as $order)
                         <tr>
                             <td>{{ $order->id }}</td>
+                            @if (!tenant())
+                                <td>{{ $order->tenant->name }}</td>
+                            @endif
                             <td>{{ $order->grand_total }}</td>
-                            <td>{{ $order->created_date }}</td>
+                            <td>{{ $order->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>

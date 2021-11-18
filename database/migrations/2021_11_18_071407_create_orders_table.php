@@ -15,11 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id')->nullable();
-            $table->integer('supplier_id')->nullable();
-            $table->integer('file_id')->nullable();
+            $table->string('tenant_id');
+            $table->integer('category_id')->default(0);
+            $table->integer('supplier_id')->default(0);
             $table->string('transaction_id')->nullable();
-            $table->float('subtotal');
             $table->float('grand_total');
             $table->timestamps();
         });
