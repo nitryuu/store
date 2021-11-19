@@ -16,6 +16,21 @@
             <div class="order-input__wrapper">
                 <form action="/order" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @if (!tenant())
+                        <div class="order-data-list">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Branch</label>
+                                </div>
+                                <select class="custom-select" name="branch" required>
+                                    <option value="" selected>Choose...</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    @endif
                     <div class="order-data-list">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -34,7 +49,7 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text">Kategori</label>
                             </div>
-                            <select class="custom-select" name="category">
+                            <select class="custom-select" name="category" required>
                                 <option value="" selected>Choose...</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -55,7 +70,7 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text">Date</label>
                             </div>
-                            <input type="text" name="date" class="form-control">
+                            <input type="text" name="date" class="form-control date">
                         </div>
                     </div>
                     <table class="table mt-5">
@@ -127,6 +142,8 @@
 
 @section('script')
     <script>
+        $('.date').datetimepicker()
+
         function calculateSubTotal(element) {
             let row = element.parents('tr')
             let qty = row.find('.qty').val()

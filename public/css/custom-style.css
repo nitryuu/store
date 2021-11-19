@@ -1,46 +1,147 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .app {
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  min-height: 100vh;
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
 .sidebar__wrapper {
-  background: #161718;
-  color: white;
+    position: fixed;
+    background: #161718;
+    color: white;
+    width: 220px;
+    height: 100vh;
+    transition: all 0.5s;
+    z-index: 9;
+}
+
+.app.show .sidebar__wrapper {
+    margin-left: 0;
+}
+
+.app.show .wrapper {
+    margin-left: 220px;
+}
+
+.sidebar {
+    height: 100vh;
 }
 
 .sidebar__header {
-  padding: 1rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-size: 20px;
-  border-bottom: 1px solid white;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 20px;
+    border-bottom: 1px solid white;
 }
 
 .sidebar__menu {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .sidebar a {
-  color: white;
-  text-decoration: none;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  display: block;
-  width: 100%;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    display: block;
+    width: 100%;
+}
+
+.wrapper {
+    width: 100%;
+    margin-left: 220px;
+    transition: all 0.5s;
+    position: relative;
+    /* z-index: 8; */
 }
 
 .navbar {
-  justify-content: flex-end;
+    justify-content: flex-end;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.navbar__menu-mobile {
+    display: none;
+}
+
+.navbar__menu-mobile i {
+    cursor: pointer;
+}
+
+.navbar__user {
+    position: relative;
+}
+
+.navbar__user a {
+    color: black;
+    text-decoration: none;
+}
+
+.navbar__user-name {
+    cursor: pointer;
+}
+
+.navbar__user-menu {
+    display: none;
+    position: absolute;
+    bottom: -4.5rem;
+    background: white;
+    right: 0;
+    padding: 5px 20px;
+    box-shadow: 0 0 2px 0 black;
+}
+
+.navbar__user-menu.show {
+    display: block;
 }
 
 .main__wrapper {
-  padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 6rem;
+}
+
+#branch i {
+    cursor: pointer;
+    color: red;
+}
+
+#order i,
+#supplier i {
+    cursor: pointer;
+    color: green;
+}
+
+@media only screen and (max-width: 1023px) {
+    .sidebar__wrapper {
+        margin-left: -220px;
+    }
+
+    .wrapper {
+        margin-left: 0;
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .navbar__menu-mobile {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .main__wrapper {
+        padding: 0.5rem 0.7rem 6rem;
+    }
+
+    .order-input__wrapper table tbody tr td {
+        padding: 0.75rem 2px;
+    }
 }

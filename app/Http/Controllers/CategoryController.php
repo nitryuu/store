@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,16 +19,6 @@ class CategoryController extends Controller
         $categories = Category::all();
 
         return view('category', compact('categories'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -61,20 +52,15 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
-    }
+        $category = Category::findOrfail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Category Details',
+            'data' => $category
+        ]);
     }
 
     /**
@@ -84,9 +70,26 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('category')->with([
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        Category::findOrfail($id)->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Category updated'
+        ]);
     }
 
     /**
@@ -95,8 +98,15 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::findOrfail($id);
+        Order::where('category_id', $id)->delete();
+        $category->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Category deleted'
+        ]);
     }
 }

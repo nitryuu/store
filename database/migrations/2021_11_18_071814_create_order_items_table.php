@@ -19,7 +19,7 @@ class CreateOrderItemsTable extends Migration
             $table->integer('order_id');
             $table->string('name');
             $table->integer('qty');
-            $table->float('harga');
+            $table->float('price');
             $table->float('subtotal');
             $table->timestamps();
         });

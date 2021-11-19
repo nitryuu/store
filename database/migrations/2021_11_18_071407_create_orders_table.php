@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->integer('supplier_id')->default(0);
             $table->string('transaction_id')->nullable();
             $table->float('grand_total');
+            $table->integer('status');
             $table->timestamps();
         });
     }

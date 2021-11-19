@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,16 +19,6 @@ class SupplierController extends Controller
         $suppliers = Supplier::all();
 
         return view('supplier', compact('suppliers'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -67,20 +58,15 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $supplier)
+    public function show($id)
     {
-        //
-    }
+        $supplier = Supplier::findOrfail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Supplier Details',
+            'data' => $supplier
+        ]);
     }
 
     /**
@@ -90,9 +76,29 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('supplier')->with([
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        Supplier::findOrfail($id)->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Supplier updated'
+        ]);
     }
 
     /**
@@ -101,8 +107,14 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)
     {
-        //
+        Supplier::findOrfail($id)->delete();
+        Order::where('supplier_id', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Supplier deleted'
+        ]);
     }
 }

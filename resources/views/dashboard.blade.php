@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    asdasdsas
+    DASHBOARD
 @endsection
