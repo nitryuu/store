@@ -179,7 +179,7 @@
                     url: `/supplier/${id}`,
                     data: $(this).serialize(),
                     headers: {
-                        'X_CSRF_TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     success: function() {
                         location.reload()
@@ -198,7 +198,7 @@
                     type: 'delete',
                     url: `/supplier/${id}`,
                     headers: {
-                        'X_CSRF_TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     success: function() {
                         location.reload()

@@ -49,6 +49,9 @@
                             <a href="{{ url('/branch') }}">Cabang</a>
                         </div>
                         <div class="sidebar__menu-list">
+                            <a href="{{ url('/income') }}">Pendapatan</a>
+                        </div>
+                        <div class="sidebar__menu-list">
                             <a href="{{ url('/users') }}">User</a>
                         </div>
                     @endif
@@ -92,6 +95,7 @@
     </script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="{{ global_asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.11.3/api/sum().js"></script>
     <script>
         $('.navbar__user-name').click(function() {
             $('.navbar__user-menu').toggleClass('show')

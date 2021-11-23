@@ -107,6 +107,16 @@
     padding: 0.5rem 1rem 6rem;
 }
 
+.info__wrapper {
+    display: flex;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+}
+
+.outcome__wrapper {
+    display: none;
+}
+
 #branch i {
     cursor: pointer;
     color: red;

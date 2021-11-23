@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Order;
 use App\Models\Order_items;
 use App\Models\Supplier;
 use App\Models\Tenant;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File as Files;
@@ -22,6 +24,20 @@ class OrderController extends Controller
         } else {
             $orders = Order::with('branch')->where('status', 1)->get();
         }
+
+        $orders->map(function ($order) {
+            $created_by = explode(',', $order->created_by);
+            $id = $created_by[0];
+            $table = $created_by[1];
+
+            if ($table == 'admin') {
+                $user = Admin::findOrfail($id)->value('name');
+            } else {
+                $user = User::findOrfail($id)->value('name');
+            }
+
+            $order->created_by = $user;
+        });
 
         $branches = Tenant::all();
         $branches->map(function ($branch) {
@@ -64,20 +80,22 @@ class OrderController extends Controller
             ]);
         }
 
+        if (auth('user')->check()) {
+            $created_by = auth('user')->user()->id . ',user';
+        } else {
+            $created_by = auth('admin')->user()->id . ',admin';
+        }
+
         $order = Order::create([
-            'tenant_id' => $request->branch,
+            'tenant_id' => $request->branch ?: tenant('id'),
             'category_id' => $request->category,
             'supplier_id' => $request->supplier ?: 0,
             'transaction_id' => $request->transaction_id ?: 0,
             'grand_total' => $request->total,
-            'status' => 1
+            'status' => 1,
+            'date' => $request->date ?: Carbon::now(),
+            'created_by' => $created_by
         ]);
-
-        if ($request->date) {
-            $order->created_at = $request->date;
-            tenant('id') && $order->tenant_id = tenant('id');
-            $order->update();
-        }
 
         for ($i = 0; $i < count($request->name); $i++) {
             if ($request->name[$i]) {
@@ -155,13 +173,8 @@ class OrderController extends Controller
             'supplier_id' => $request->supplier ?: 0,
             'transaction_id' => $request->transaction_id ?: 0,
             'grand_total' => $request->total,
+            'date' => $request->date ?: Carbon::now()
         ]);
-
-        if ($request->date) {
-            $order->update([
-                'created_at' => $request->date,
-            ]);
-        }
 
         for ($i = 0; $i < count($request->name); $i++) {
             if ($request->name) {

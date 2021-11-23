@@ -13,16 +13,30 @@
     </div>
 
     <div class="content__wrapper">
+        <div class="info__wrapper">
+            <div class="form-group mb-0">
+                <label for="date_filter" class="date_filter">Filter Tanggal: </label>
+                <input type="text" class="form-control date_filter" data-date-format="yyyy-mm-dd">
+            </div>
+            <div class="outcome__wrapper">
+                <div class="form-group mb-0 text-right">
+                    <label class="outcome__label">Total pengeluaran: </label>
+                    <input type="text" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
         <div class="content table-responsive">
             <table id="order" class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Total</th>
                         @if (!tenant())
                             <th>Branch</th>
+                            <th>Penginput</th>
+                            <th>Tanggal input</th>
                         @endif
-                        <th>Total</th>
-                        <th>Date</th>
+                        <th>Tanggal nota</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,11 +44,13 @@
                     @foreach ($orders as $order)
                         <tr>
                             <td>{{ $order->id }}</td>
+                            <td>{{ $order->grand_total }}</td>
                             @if (!tenant())
                                 <td>{{ $order->tenant->name }}</td>
+                                <td>{{ $order->created_by }}</td>
+                                <td>{{ $order->created_at }}</td>
                             @endif
-                            <td>{{ $order->grand_total }}</td>
-                            <td>{{ $order->created_at }}</td>
+                            <td>{{ $order->date }}</td>
                             <td>
                                 <i class="fas fa-eye detailsButton" data-toggle="modal" data-target="#orderDetails"
                                     data-id="{{ $order->id }}"></i>
@@ -172,10 +188,26 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#order').DataTable();
+            let orderTable = $('#order').DataTable();
             $('.date').datetimepicker()
-        });
+            $('.date_filter').datetimepicker({
+                minView: 'month'
+            })
 
+            $('.date_filter').on('change', function() {
+                orderTable.column(3).search($(this).val()).draw()
+                let outcomeValue = orderTable.column(2, {
+                    search: 'applied'
+                }).data().sum()
+
+                if ($(this).val()) {
+                    $('.outcome__wrapper').css('display', 'block')
+                    $('.outcome__wrapper input').val(outcomeValue)
+                } else {
+                    $('.outcome__wrapper').css('display', 'none')
+                }
+            })
+        });
 
         $('.detailsButton').click(function() {
             let id = $(this).data('id')
@@ -232,7 +264,7 @@
                 type: 'delete',
                 url: `/order/${id}`,
                 headers: {
-                    'X_CSRF_TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function() {
                     location.reload()
@@ -250,10 +282,10 @@
                 url: `/order/${id}`,
                 data: $(this).serialize(),
                 headers: {
-                    'X_CSRF_TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function() {
-                    // location.reload()
+                    location.reload()
                 }
             })
         })

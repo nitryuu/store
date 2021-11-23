@@ -3,6 +3,7 @@
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,8 @@ Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::middleware('auth:admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/chart', [DashboardController::class, 'chart']);
+    Route::post('/chart', [DashboardController::class, 'filter_chart']);
 
     // order
     Route::get('/order-list', [OrderController::class, 'index']);
@@ -57,6 +60,12 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/category', [CategoryController::class, 'store']);
     Route::put('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+
+    // income
+    Route::get('/income', [IncomeController::class, 'index']);
+    Route::post('/income', [IncomeController::class, 'store']);
+    Route::get('/income/{id}', [IncomeController::class, 'show']);
+    Route::put('/income/{id}', [IncomeController::class, 'update']);
 
     // branch
     Route::get('/branch', [BranchController::class, 'index']);

@@ -14,10 +14,6 @@ class BranchController extends Controller
 {
     public function index()
     {
-        if (tenant()) {
-            return redirect('/');
-        }
-
         $branches = Tenant::with('admin')->get();
         $branches->map(function ($branch) {
             $branch->makeHidden('id');
@@ -42,7 +38,7 @@ class BranchController extends Controller
 
         $tenant = Tenant::create([
             'id' => $random,
-            'name' => $request->branch_name
+            'name' => $request->branch_name,
         ]);
 
         $tenant->domains()->create(['domain' => $random . '.localhost']);

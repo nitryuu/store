@@ -18,7 +18,7 @@
                 <h2 class="text-center mb-3">
                     Login
                 </h2>
-                <form action="{{ url('/login') }}" method="POST">
+                <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <input type="email" name="email" class="form-control mb-2" required>
                     <input type="password" name="password" class="form-control" required>

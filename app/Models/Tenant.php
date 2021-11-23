@@ -15,12 +15,22 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return [
             'id',
-            'name',
+            'name'
         ];
     }
 
     public function admin()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function income()
+    {
+        return $this->hasMany(Income::class, 'tenant_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'tenant_id');
     }
 }
