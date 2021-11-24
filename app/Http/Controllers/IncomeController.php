@@ -42,9 +42,15 @@ class IncomeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/income')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect()->route('tenant.income', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('/income')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         if (auth('user')->check()) {
@@ -60,7 +66,11 @@ class IncomeController extends Controller
             'created_by' => $created_by
         ]);
 
-        return redirect('/income');
+        if (tenant()) {
+            return redirect()->route('tenant.income', [tenant('id')]);
+        } else {
+            return redirect('/income');
+        }
     }
 
     public function show($id)

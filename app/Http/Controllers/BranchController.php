@@ -29,9 +29,15 @@ class BranchController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('branch')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect('branch', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('branch')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         $random = Str::random(5);
@@ -43,7 +49,11 @@ class BranchController extends Controller
 
         $tenant->domains()->create(['domain' => $random . '.localhost']);
 
-        return redirect('branch');
+        if (tenant()) {
+            return redirect('branch', [tenant('id')]);
+        } else {
+            return redirect('branch');
+        }
     }
 
     public function show($id)
@@ -64,9 +74,15 @@ class BranchController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('branch')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect('branch', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('branch')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         Tenant::findOrfail($id)->update([

@@ -75,9 +75,15 @@ class OrderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/order-input')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect()->route('tenant.order-input', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('/order-input')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         if (auth('user')->check()) {
@@ -129,7 +135,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect('/order-input');
+        return redirect('/order-input', [tenant('id')]);
     }
 
     public function show($id)
@@ -161,9 +167,15 @@ class OrderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/order-input')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect()->route('tenant.order-input', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('/order-input')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         $order = Order::findOrfail($id);

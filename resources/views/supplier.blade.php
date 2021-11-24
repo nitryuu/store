@@ -52,7 +52,8 @@
     <div class="modal fade" id="createSupplier" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('/supplier') }}" method="POST">
+                <form action="{{ tenant() ? route('tenant.supplier.post', [tenant('id')]) : url('/supplier') }}"
+                    method="POST">
                     @csrf
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title">Tambah Supplier</h5>
@@ -156,7 +157,7 @@
 
                 $.ajax({
                     type: 'get',
-                    url: `/supplier/${id}`,
+                    url: `supplier/${id}`,
                     success: function(response) {
                         let value = response.data
                         let modal = $('#supplierDetails')
@@ -176,7 +177,7 @@
 
                 $.ajax({
                     type: 'put',
-                    url: `/supplier/${id}`,
+                    url: `supplier/${id}`,
                     data: $(this).serialize(),
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -196,7 +197,7 @@
 
                 $.ajax({
                     type: 'delete',
-                    url: `/supplier/${id}`,
+                    url: `supplier/${id}`,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

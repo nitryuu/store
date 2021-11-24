@@ -30,9 +30,15 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('users')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect('users', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('users')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         User::create([
@@ -42,7 +48,11 @@ class UserController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
-        return redirect('users');
+        if (tenant()) {
+            return redirect('users', [tenant('id')]);
+        } else {
+            return redirect('users');
+        }
     }
 
     public function show($id)
@@ -63,7 +73,8 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('category')->with([
+            return response()->json([
+                'success' => false,
                 'errors' => $validator->errors()
             ]);
         }

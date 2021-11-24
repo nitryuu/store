@@ -49,7 +49,11 @@ class SupplierController extends Controller
             'email' => $request->email
         ]);
 
-        return redirect('/supplier');
+        if (tenant()) {
+            return redirect()->route('/supplier', [tenant('id')]);
+        } else {
+            return redirect('/supplier');
+        }
     }
 
     /**
@@ -83,9 +87,15 @@ class SupplierController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('supplier')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect('supplier', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('supplier')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         Supplier::findOrfail($id)->update([

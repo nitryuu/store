@@ -48,7 +48,8 @@
     <div class="modal fade" id="createCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('/category') }}" method="POST">
+                <form action="{{ tenant() ? route('tenant.category.post', [tenant('id')]) : url('/category') }}"
+                    method="POST">
                     @csrf
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title">Tambah Kategori</h5>
@@ -128,7 +129,7 @@
 
                 $.ajax({
                     type: 'get',
-                    url: `/category/${id}`,
+                    url: `category/${id}`,
                     success: function(response) {
                         let value = response.data
                         let modal = $('#categoryDetails')
@@ -145,7 +146,7 @@
 
                 $.ajax({
                     type: 'put',
-                    url: `/category/${id}`,
+                    url: `category/${id}`,
                     data: $(this).serialize(),
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -165,7 +166,7 @@
 
                 $.ajax({
                     type: 'delete',
-                    url: `/category/${id}`,
+                    url: `category/${id}`,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

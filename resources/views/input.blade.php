@@ -14,7 +14,8 @@
     <div class="content__wrapper">
         <div class="content">
             <div class="order-input__wrapper">
-                <form action="/order" method="POST" enctype="multipart/form-data">
+                <form action="{{ tenant() ? route('tenant.order', [tenant('id')]) : url('/order') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @if (!tenant())
                         <div class="order-data-list">

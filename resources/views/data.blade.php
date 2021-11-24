@@ -77,7 +77,7 @@
                 </div>
                 <form id="updateForm">
                     <div class="modal-body">
-                        <div class="form-group row">
+                        <div class="form-group row" {{ tenant('id') ? 'hidden' : '' }}>
                             <label for="branch" class="col-sm-2 col-form-label">Cabang</label>
                             <div class="col-sm-10">
                                 <select name="branch" class="custom-select">
@@ -215,7 +215,7 @@
 
             $.ajax({
                 type: 'get',
-                url: `/order-details/${id}`,
+                url: `order-details/${id}`,
                 success: function(response) {
                     $('.order-items__list tr').remove()
                     $('#updateForm img').remove()
@@ -262,7 +262,7 @@
 
             $.ajax({
                 type: 'delete',
-                url: `/order/${id}`,
+                url: `order/${id}`,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
@@ -279,7 +279,7 @@
 
             $.ajax({
                 type: 'put',
-                url: `/order/${id}`,
+                url: `order/${id}`,
                 data: $(this).serialize(),
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'

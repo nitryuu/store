@@ -50,7 +50,7 @@
     <div class="modal fade" id="createUser" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('/users') }}" method="POST">
+                <form action="{{ tenant() ? route('tenant.users.post', [tenant('id')]) : url('/users') }}" method="POST">
                     @csrf
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title">Tambah User</h5>
@@ -157,7 +157,7 @@
 
             $.ajax({
                 type: 'get',
-                url: `/users/${id}`,
+                url: `users/${id}`,
                 success: function(response) {
                     let value = response.data
                     let modal = $('#userDetails')
@@ -175,7 +175,7 @@
 
             $.ajax({
                 type: 'put',
-                url: `/users/${id}`,
+                url: `users/${id}`,
                 data: $(this).serialize(),
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -195,7 +195,7 @@
 
             $.ajax({
                 type: 'delete',
-                url: `/users/${id}`,
+                url: `users/${id}`,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },

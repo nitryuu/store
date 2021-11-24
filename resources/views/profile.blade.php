@@ -13,7 +13,7 @@
 
     <div class="content__wrapper">
         <div class="content">
-            <form action="{{ url('/profile') }}" method="POST">
+            <form action="{{ tenant() ? route('tenant.profile.post') : url('/profile') }}" method="POST">
                 @csrf
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Name</label>

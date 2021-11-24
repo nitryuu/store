@@ -18,7 +18,8 @@
                 <h2 class="text-center mb-3">
                     Login
                 </h2>
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ tenant('id') ? route('tenant.login.post', [tenant('id')]) : route('login.post') }}"
+                    method="POST">
                     @csrf
                     <input type="email" name="email" class="form-control mb-2" required>
                     <input type="password" name="password" class="form-control" required>

@@ -34,16 +34,26 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/category')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect()->route('tenant.category', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('/category')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         Category::create([
             'name' => $request->name
         ]);
 
-        return redirect('/category');
+        if (tenant()) {
+            return redirect()->route('/category', [tenant('id')]);
+        } else {
+            return redirect('/category');
+        }
     }
 
     /**
@@ -77,9 +87,15 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('category')->with([
-                'errors' => $validator->errors()
-            ]);
+            if (tenant()) {
+                return redirect('category', [tenant('id')])->with([
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect('category')->with([
+                    'errors' => $validator->errors()
+                ]);
+            }
         }
 
         Category::findOrfail($id)->update([

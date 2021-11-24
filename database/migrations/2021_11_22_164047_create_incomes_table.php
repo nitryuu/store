@@ -17,7 +17,7 @@ class CreateIncomesTable extends Migration
             $table->id();
             $table->string('tenant_id');
             $table->float('income');
-            $table->timestamps('date');
+            $table->timestamp('date');
             $table->string('created_by');
             $table->timestamps();
         });

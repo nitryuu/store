@@ -11,10 +11,6 @@ class LoginController extends Controller
 
     public function index()
     {
-        if (auth('admin')->check()) {
-            return redirect('/dashboard');
-        }
-
         return view('login');
     }
 
@@ -50,7 +46,7 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('login')->with([
+            return redirect('tenant.login')->with([
                 'errors' => $validator->errors()
             ]);
         }
@@ -58,9 +54,11 @@ class LoginController extends Controller
         $branchCheck = auth('user')->attempt($request->only('email', 'password'));
 
         if ($branchCheck) {
-            $tenant = Tenant::find(auth('user')->user()->tenant_id);
-            $domain = $tenant->domains()->first()->domain;
-            return redirect()->route('dashboard')->domain($domain);
+            // $tenant = Tenant::find(auth('user')->user()->tenant_id);
+            // $domain = $tenant->domains()->first()->domain;
+            // return redirect()->route('dashboard')->domain($domain);
+            return redirect(route('dashboard', [tenant('id')]));
+            // return redirect(route('dashboard', [tenant('id')]));
         } else {
             return redirect('login');
         }
@@ -68,8 +66,12 @@ class LoginController extends Controller
 
     public function logout()
     {
-        auth('admin')->logout();
-
-        return redirect('login');
+        if (tenant()) {
+            auth('user')->logout();
+            return redirect(route('tenant.login', [tenant('id')]));
+        } else {
+            auth('admin')->logout();
+            return redirect('login');
+        }
     }
 }

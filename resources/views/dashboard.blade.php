@@ -29,6 +29,7 @@
         $('.date_filter').datetimepicker({
             minView: 'month'
         })
+
         const branches = '{{ $branches }}'
         let data = []
 
@@ -45,7 +46,7 @@
 
         function initialChartData(initial = true) {
             $.ajax({
-                url: '/chart',
+                url: 'chart',
                 success: function(response) {
                     for (let i = 0; i < branches; i++) {
                         let value = response.data
@@ -90,7 +91,7 @@
             let date = $('input[name="date"]').val()
             $.ajax({
                 type: 'post',
-                url: '/chart',
+                url: 'chart',
                 data: {
                     date: date
                 },

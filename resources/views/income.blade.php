@@ -54,7 +54,7 @@
     <div class="modal fade" id="createIncome" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('/income') }}" method="POST">
+                <form action="{{ tenant() ? url(tenant('id') . '/income') : url('/income') }}" method="POST">
                     @csrf
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title">Tambah Pendapatan</h5>
@@ -63,15 +63,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="branch">Cabang</label>
-                            <select name="branch" class="custom-select">
-                                <option value="" selected disabled>Choose...</option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (!tenant())
+                            <div class="form-group">
+                                <label for="branch">Cabang</label>
+                                <select name="branch" class="custom-select">
+                                    <option value="" selected disabled>Choose...</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label for="income_date">Tanggal Pemasukan</label>
                             <input type="text" name="income_date" class="form-control date" required>
@@ -161,7 +163,7 @@
 
                 $.ajax({
                     type: 'get',
-                    url: `/income/${id}`,
+                    url: `income/${id}`,
                     success: function(response) {
                         let value = response.data
                         let modal = $('#incomeDetails')
@@ -183,7 +185,7 @@
 
                 $.ajax({
                     type: 'put',
-                    url: `/income/${id}`,
+                    url: `income/${id}`,
                     data: data,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -203,7 +205,7 @@
 
                 $.ajax({
                     type: 'delete',
-                    url: `/income/${id}`,
+                    url: `income/${id}`,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

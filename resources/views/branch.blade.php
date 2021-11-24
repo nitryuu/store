@@ -48,7 +48,7 @@
     <div class="modal fade" id="createBranch" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('/branch') }}" method="POST">
+                <form action="{{ tenant() ? route('tenant.branch', [tenant('id')]) : url('/branch') }}" method="POST">
                     @csrf
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title">Tambah Cabang</h5>
@@ -128,7 +128,7 @@
 
                 $.ajax({
                     type: 'get',
-                    url: `/branch/${id}`,
+                    url: `branch/${id}`,
                     success: function(response) {
                         let value = response.data
                         let modal = $('#branchDetails')
@@ -145,7 +145,7 @@
 
                 $.ajax({
                     type: 'put',
-                    url: `/branch/${id}`,
+                    url: `branch/${id}`,
                     data: $(this).serialize(),
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -165,7 +165,7 @@
 
                 $.ajax({
                     type: 'delete',
-                    url: `/branch/${id}`,
+                    url: `branch/${id}`,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

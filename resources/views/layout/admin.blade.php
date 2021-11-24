@@ -30,27 +30,32 @@
                 </div>
                 <div class="sidebar__menu">
                     <div class="sidebar__menu-list">
-                        <a href="{{ url('/dashboard') }}">Dashboard</a>
+                        <a
+                            href="{{ tenant('id') ? url(tenant('id') . '/dashboard') : url('/dashboard') }}">Dashboard</a>
                     </div>
                     <div class="sidebar__menu-list">
-                        <a href="{{ url('/order-list') }}">Pembelian</a>
+                        <a
+                            href="{{ tenant('id') ? url(tenant('id') . '/order-list') : url('/order-list') }}">Pembelian</a>
                     </div>
                     <div class="sidebar__menu-list">
-                        <a href="{{ url('/order-input') }}">Input Pembelian</a>
+                        <a href="{{ tenant('id') ? url(tenant('id') . '/order-input') : url('/order-input') }}">Input
+                            Pembelian</a>
                     </div>
                     <div class="sidebar__menu-list">
-                        <a href="{{ url('/supplier') }}">Supplier</a>
+                        <a href="{{ tenant('id') ? url(tenant('id') . '/supplier') : url('/supplier') }}">Supplier</a>
                     </div>
                     <div class="sidebar__menu-list">
-                        <a href="{{ url('/category') }}">Kategori</a>
+                        <a href="{{ tenant('id') ? url(tenant('id') . '/category') : url('/category') }}">Kategori</a>
                     </div>
                     @if (!tenant())
                         <div class="sidebar__menu-list">
                             <a href="{{ url('/branch') }}">Cabang</a>
                         </div>
-                        <div class="sidebar__menu-list">
-                            <a href="{{ url('/income') }}">Pendapatan</a>
-                        </div>
+                    @endif
+                    <div class="sidebar__menu-list">
+                        <a href="{{ tenant('id') ? url(tenant('id') . '/income') : url('/income') }}">Pendapatan</a>
+                    </div>
+                    @if (!tenant())
                         <div class="sidebar__menu-list">
                             <a href="{{ url('/users') }}">User</a>
                         </div>
@@ -70,12 +75,12 @@
                         </div>
                         <div class="navbar__user-menu">
                             <div class="navbar__user-menu-list">
-                                <a href="{{ url('profile') }}">
+                                <a href="{{ tenant() ? url(tenant('id') . '/profile') : url('profile') }}">
                                     Profile
                                 </a>
                             </div>
                             <div class="navbar__user-menu-list">
-                                <a href="{{ url('logout') }}">
+                                <a href="{{ tenant() ? route('tenant.logout', [tenant('id')]) : url('logout') }}">
                                     Logout
                                 </a>
                             </div>
