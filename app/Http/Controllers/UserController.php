@@ -31,7 +31,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             if (tenant()) {
-                return redirect('users', [tenant('id')])->with([
+                return redirect()->route('tenant.users', [tenant('id')])->with([
                     'errors' => $validator->errors()
                 ]);
             } else {
@@ -49,7 +49,7 @@ class UserController extends Controller
         ]);
 
         if (tenant()) {
-            return redirect('users', [tenant('id')]);
+            return redirect()->route('tenant.users', [tenant('id')]);
         } else {
             return redirect('users');
         }

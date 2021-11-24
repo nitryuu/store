@@ -30,7 +30,7 @@ class BranchController extends Controller
 
         if ($validator->fails()) {
             if (tenant()) {
-                return redirect('branch', [tenant('id')])->with([
+                return redirect()->route('tenant.branch', [tenant('id')])->with([
                     'errors' => $validator->errors()
                 ]);
             } else {
@@ -50,7 +50,7 @@ class BranchController extends Controller
         $tenant->domains()->create(['domain' => $random . '.localhost']);
 
         if (tenant()) {
-            return redirect('branch', [tenant('id')]);
+            return redirect()->route('tenant.branch', [tenant('id')]);
         } else {
             return redirect('branch');
         }
@@ -75,7 +75,7 @@ class BranchController extends Controller
 
         if ($validator->fails()) {
             if (tenant()) {
-                return redirect('branch', [tenant('id')])->with([
+                return redirect()->route('tenant.branch', [tenant('id')])->with([
                     'errors' => $validator->errors()
                 ]);
             } else {

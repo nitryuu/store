@@ -50,7 +50,7 @@ class CategoryController extends Controller
         ]);
 
         if (tenant()) {
-            return redirect()->route('/category', [tenant('id')]);
+            return redirect()->route('tenant.category', [tenant('id')]);
         } else {
             return redirect('/category');
         }
@@ -88,7 +88,7 @@ class CategoryController extends Controller
 
         if ($validator->fails()) {
             if (tenant()) {
-                return redirect('category', [tenant('id')])->with([
+                return redirect()->route('tenant.category', [tenant('id')])->with([
                     'errors' => $validator->errors()
                 ]);
             } else {

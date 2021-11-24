@@ -50,7 +50,7 @@ class SupplierController extends Controller
         ]);
 
         if (tenant()) {
-            return redirect()->route('/supplier', [tenant('id')]);
+            return redirect()->route('tenant.supplier', [tenant('id')]);
         } else {
             return redirect('/supplier');
         }
@@ -88,7 +88,7 @@ class SupplierController extends Controller
 
         if ($validator->fails()) {
             if (tenant()) {
-                return redirect('supplier', [tenant('id')])->with([
+                return redirect()->route('tenant.supplier', [tenant('id')])->with([
                     'errors' => $validator->errors()
                 ]);
             } else {

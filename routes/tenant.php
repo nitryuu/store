@@ -67,14 +67,14 @@ Route::group([
         Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
         Route::get('/supplier/{id}', [SupplierController::class, 'show']);
         Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.post');
-        Route::put('/supplier/{id}', [SupplierController::class, 'update']);
+        Route::put('/supplier/{id}', [SupplierController::class, 'update'])->name('supplier.put');
         Route::delete('/supplier/{id}', [SupplierController::class, 'destroy']);
 
         // category
         Route::get('/category', [CategoryController::class, 'index'])->name('category');
         Route::get('/category/{id}', [CategoryController::class, 'show']);
         Route::post('/category', [CategoryController::class, 'store'])->name('category.post');
-        Route::put('/category/{id}', [CategoryController::class, 'update']);
+        Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.put');
         Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
         // income
@@ -84,14 +84,14 @@ Route::group([
         Route::put('/income/{id}', [IncomeController::class, 'update']);
 
         // branch
-        Route::get('/branch', [BranchController::class, 'index']);
+        Route::get('/branch', [BranchController::class, 'index'])->name('branch');
         Route::get('/branch/{id}', [BranchController::class, 'show']);
         Route::post('/branch', [BranchController::class, 'store'])->name('branch.post');
-        Route::put('/branch/{id}', [BranchController::class, 'update']);
+        Route::put('/branch/{id}', [BranchController::class, 'update'])->name('branch.put');
         Route::delete('/branch/{id}', [BranchController::class, 'destroy']);
 
         // users
-        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/users/{id}', [UserController::class, 'show']);
         Route::post('/users', [UserController::class, 'store'])->name('users.post');
         Route::put('/users/{id}', [UserController::class, 'update']);

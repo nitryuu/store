@@ -135,7 +135,11 @@ class OrderController extends Controller
             }
         }
 
-        return redirect('/order-input', [tenant('id')]);
+        if (tenant()) {
+            return redirect()->route('tenant.order-input', [tenant('id')]);
+        } else {
+            return redirect('/order-input', [tenant('id')]);
+        }
     }
 
     public function show($id)
